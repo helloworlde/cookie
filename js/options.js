@@ -2,6 +2,7 @@ function saveSettings() {
     let serverAddress = document.getElementById("serverAddress").value;
     let cookieNames = document.getElementById("cookieNames").value;
     let token = document.getElementById("token").value;
+    let extraBody = document.getElementById("extraBody").value;
 
     chrome.storage.sync.set({
         "serverAddress": serverAddress
@@ -15,6 +16,11 @@ function saveSettings() {
     });
     chrome.storage.sync.set({
         "token": token
+    }, function () {
+        console.log("Save token completed")
+    });
+    chrome.storage.sync.set({
+        "extraBody": extraBody
     }, function () {
         console.log("Save token completed")
     });
@@ -33,6 +39,10 @@ function resetSettings() {
     chrome.storage.sync.remove("token", function () {
         document.getElementById("token").value = "";
         console.log("Remove token completed")
+    });
+    chrome.storage.sync.remove("extraBody", function () {
+        document.getElementById("extraBody").value = "";
+        console.log("Remove extraBody completed")
     });
 }
 
@@ -59,6 +69,13 @@ function loadSettings() {
             result.token = "";
         }
         document.getElementById("token").value = result.token;
+    })
+    chrome.storage.sync.get(["extraBody"], function (result) {
+        console.log(result);
+        if (result.extraBody === undefined) {
+            result.extraBody = "";
+        }
+        document.getElementById("extraBody").value = result.extraBody;
     })
 }
 

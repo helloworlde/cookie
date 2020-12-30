@@ -1,7 +1,6 @@
 function updateCookie(domain, cookie) {
     chrome.storage.sync.get(["serverAddress"], function (result) {
         console.log("serverAddress: " + JSON.stringify(result));
-
         if (result.serverAddress === undefined) {
             return;
         }
@@ -14,23 +13,31 @@ function updateCookie(domain, cookie) {
             }
             let token = result.token;
 
-            $.ajax({
-                url: serverUrl,
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                headers: {
-                    "Authentication": token,
-                },
-                data: JSON.stringify({
-                    "cookie": cookie,
-                    "domain": domain
-                }),
-                success: (data) => {
-                    console.log("Update cookie success: " + data)
-                },
-                error: (xhr, status, err) => {
-                    console.error("Update cookie failed,  status: " + status + " err: " + err);
+            chrome.storage.sync.get(["extraBody"], function (result) {
+                console.log("extraBody: " + JSON.stringify(result));
+                if (result.extraBody === undefined) {
+                    result.extraBody = {};
                 }
+                let extraBody = JSON.parse(result.extraBody);
+                $.ajax({
+                    url: serverUrl,
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    headers: {
+                        "Authentication": token,
+                    },
+                    data: JSON.stringify(Object.assign({
+                            "cookie": cookie,
+                            "domain": domain
+                        }, extraBody)
+                    ),
+                    success: (data) => {
+                        console.log("Update cookie success: " + data)
+                    },
+                    error: (xhr, status, err) => {
+                        console.error("Update cookie failed,  status: " + status + " err: " + err);
+                    }
+                });
             });
         })
     })
@@ -58,7 +65,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 function parseNeedCookie(cookieNames, cookie) {
     console.log(cookieNames)
     if (cookieNames.length > 0) {
-        if (cookieNames.indexOf(cookie.name) !== -1) {
+        if (cookieNames[0] === "*") {
+            return cookie.name + "=" + cookie.value;
+        } else if (cookieNames.indexOf(cookie.name) !== -1) {
             return cookie.name + "=" + cookie.value;
         }
     }
