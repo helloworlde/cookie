@@ -73,4 +73,12 @@ Server 端只需要实现保存和读取 Cookie 就可以，参考 [https://gith
 }
 ```
 
+--- 
+
+## 参考文档
+
+- [Chrome Plugin](https://developer.chrome.com/docs/extensions/mv3/)
+- [chrome-extensions-samples](https://github.com/GoogleChrome/chrome-extensions-samples)
+- [cookies](https://developer.chrome.com/docs/extensions/reference/cookies/)
+- [storage](https://developer.chrome.com/docs/extensions/reference/storage/)
 
