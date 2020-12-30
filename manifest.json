@@ -1,7 +1,7 @@
 {
-  "name": "Cookie Helper",
-  "description": "Load cookie in whitelist and send to server side for other applicaitons",
-  "version": "0.8",
+  "name": "Cookie",
+  "description": "Send cookie in whitelist to server side for other applications",
+  "version": "1.0",
   "permissions": [
     "cookies",
     "tabs",
@@ -9,13 +9,8 @@
     "https://*/*",
     "storage"
   ],
-  "icons": {
-    "16": "icon.png",
-    "48": "icon.png",
-    "128": "icon.png"
-  },
   "browser_action": {
-    "default_icon": "icon.png"
+    "default_icon": "cookie.png"
   },
   "background": {
     "scripts": [
