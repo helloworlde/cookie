@@ -3,6 +3,7 @@ function saveSettings() {
     let cookieNames = document.getElementById("cookieNames").value;
     let token = document.getElementById("token").value;
     let extraBody = document.getElementById("extraBody").value;
+    let rootDomain = document.getElementById("rootDomain").value;
 
     chrome.storage.sync.set({
         "serverAddress": serverAddress
@@ -24,6 +25,12 @@ function saveSettings() {
     }, function () {
         console.log("Save token completed")
     });
+
+    chrome.storage.sync.set({
+        "rootDomain": rootDomain
+    }, function () {
+        console.log("Save rootDomain completed")
+    });
 }
 
 function resetSettings() {
@@ -42,6 +49,10 @@ function resetSettings() {
     });
     chrome.storage.sync.remove("extraBody", function () {
         document.getElementById("extraBody").value = "";
+        console.log("Remove extraBody completed")
+    });
+    chrome.storage.sync.remove("rootDomain", function () {
+        document.getElementById("rootDomain").value = "false";
         console.log("Remove extraBody completed")
     });
 }
@@ -76,6 +87,13 @@ function loadSettings() {
             result.extraBody = "";
         }
         document.getElementById("extraBody").value = result.extraBody;
+    })
+    chrome.storage.sync.get(["rootDomain"], function (result) {
+        console.log(result);
+        if (result.rootDomain === undefined) {
+            result.rootDomain = "false";
+        }
+        document.getElementById("rootDomain").value = result.rootDomain;
     })
 }
 

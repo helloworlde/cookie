@@ -1,4 +1,4 @@
-function updateCookie(domain, cookie) {
+function uploadCookies(domain, cookie) {
     chrome.storage.sync.get(["serverAddress"], function (result) {
         console.log("serverAddress: " + JSON.stringify(result));
         if (result.serverAddress === undefined) {
@@ -43,18 +43,35 @@ function updateCookie(domain, cookie) {
     })
 }
 
+function parseRootDomain(domain) {
+    return domain.split(".").reverse().splice(0, 2).reverse().join(".")
+}
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     chrome.storage.sync.get(["cookieNames"], function (result) {
         if (result.cookieNames === undefined) {
             result.cookieNames = "";
         }
         let cookieNames = result.cookieNames.split(",");
-        chrome.cookies.getAll({"domain": request.domain}, function (cookies) {
-            let cookie = cookies.map((item) => {
-                return parseNeedCookie(cookieNames, item)
-            }).filter(value => value !== "").join(";");
 
-            updateCookie(request.domain, cookie)
+        chrome.storage.sync.get(["rootDomain"], function (result) {
+            console.log("rootDomain: " + JSON.stringify(result));
+            if (result.rootDomain === undefined) {
+                result.rootDomain = "false";
+            }
+            let domain = request.domain
+            let rootDomain = result.rootDomain === "true";
+            if (rootDomain) {
+                domain = parseRootDomain(domain)
+            }
+
+            chrome.cookies.getAll({"domain": domain}, function (cookies) {
+                let cookie = cookies.map((item) => {
+                    return parseNeedCookie(cookieNames, item)
+                }).filter(value => value !== "").join(";");
+
+                uploadCookies(request.domain, cookie)
+            });
         });
     })
 

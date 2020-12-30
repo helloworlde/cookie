@@ -8,16 +8,23 @@
 <div style="margin: 20px">
     <div class="mb-3">
         <label class="form-label" for="serverAddress">Server Address</label>
-        <input class="form-control" id="serverAddress" placeholder="Please input your server domain" type="text">
+        <input class="form-control" id="serverAddress" placeholder="Please input your server address" type="text">
     </div>
     <div class="mb-3">
-        <label class="form-label" for="token">Server Token</label>
-        <input class="form-control" id="token" placeholder="Please input your server token" type="text">
+        <label class="form-label" for="token">Authentication Token</label>
+        <input class="form-control" id="token" placeholder="Please input your authentication token" type="text">
     </div>
     <div class="mb-3">
-        <label class="form-label" for="cookieNames">Cookie Name</label>
+        <label class="form-label" for="cookieNames">Cookie Names</label>
         <textarea class="form-control" id="cookieNames" placeholder="Input your cookie names, split by ','"
                   rows="1"></textarea>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="rootDomain">Fetch Until Root Domain</label>
+        <select aria-label="Fetch all cookies until root domain" class="form-select" id="rootDomain">
+            <option selected value="false">No, just fetch access domain</option>
+            <option value="true">Yes, Fetch all cookies until root domain</option>
+        </select>
     </div>
     <div class="mb-3">
         <label class="form-label" for="extraBody">Extra Request Body</label>
