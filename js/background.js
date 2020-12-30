@@ -66,9 +66,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             }
 
             chrome.cookies.getAll({"domain": domain}, function (cookies) {
-                let cookie = cookies.map((item) => {
-                    return parseNeedCookie(cookieNames, item)
-                }).filter(value => value !== "").join(";");
+                let cookie = cookies.map((item) => parseNeedCookie(cookieNames, item))
+                    .filter(value => value !== undefined)
+                    .map(value => String(value))
+                    .filter(value => value.trim() !== "")
+                    .join(";");
 
                 uploadCookies(request.domain, cookie)
             });
@@ -79,14 +81,31 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 
+function filterCookies(cookieRegex, cookie) {
+    let cookieName = cookie.name
+    let isReg;
+    try {
+        isReg = eval(cookieRegex) instanceof RegExp
+    } catch (e) {
+        console.log(e)
+        isReg = false
+    }
+
+    if (isReg) {
+        let regex = eval(cookieRegex)
+        return regex.test(cookieName)
+    } else {
+        return cookieRegex === cookieName;
+    }
+}
+
 function parseNeedCookie(cookieNames, cookie) {
-    console.log(cookieNames)
     if (cookieNames.length > 0) {
         if (cookieNames[0] === "*") {
             return cookie.name + "=" + cookie.value;
-        } else if (cookieNames.indexOf(cookie.name) !== -1) {
-            return cookie.name + "=" + cookie.value;
+        } else {
+            return cookieNames.filter(name => filterCookies(name, cookie))
+                .map(name => cookie.name + "=" + cookie.value);
         }
     }
-    return "";
 }
