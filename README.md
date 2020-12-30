@@ -29,7 +29,7 @@ git clone https://github.com/helloworlde/cookie.git
 
 2. 点击扩展程序选项，修改配置
 
-<img src="dist/settings.png" alt="Settings" style="max-width: 50%;">
+<img src="dist/settings.png" alt="Settings" style="width: 300px">
 
 配置项：
 
@@ -44,6 +44,8 @@ git clone https://github.com/helloworlde/cookie.git
   对象，会在发送请求时被合并到请求 Body 中，如 `{"token": "Cookie","action": "UPLOAD"}` 最终会被合并到请求对象中
 
 ## Server 端
+
+Server 端只需要实现保存和读取 Cookie 就可以，参考 [https://github.com/helloworlde/cos](https://github.com/helloworlde/cos)
 
 #### 请求内容
 
@@ -62,13 +64,13 @@ git clone https://github.com/helloworlde/cookie.git
 
 如果有配置附加内容:
 
-  ```json
+```json
   {
   "cookie": "[{\"domain\":\"github.com\",\"name\":\"dotcom_user\",\"value\":\"helloworlde\"},{\"domain\":\"github.com\",\"name\":\"logged_in\",\"value\":\"yes\"}]",
   "domain": "github.com",
   "token": "Cookie",
   "action": "UPLOAD"
 }
-  ```
+```
 
 
