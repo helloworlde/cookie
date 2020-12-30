@@ -29,7 +29,7 @@ git clone https://github.com/helloworlde/cookie.git
 
 2. 点击扩展程序选项，修改配置
 
-![Settings](dist/settings.png)
+<img src="dist/settings.png" alt="Settings" style="max-width: 50%;">
 
 配置项：
 
